@@ -1,5 +1,3 @@
-import { id } from 'date-fns/locale';
-
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
