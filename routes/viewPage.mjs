@@ -6,6 +6,7 @@ const router = express.Router();
 const __dirname = getDirname(import.meta.url);
 
 router.get('/about(.html)?', (req, res) => {
+  console.log('cookie:', req.cookies);
   res.sendFile(path.join(__dirname, '..', 'views', 'about.html'));
 });
 
