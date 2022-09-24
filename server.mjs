@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -6,6 +8,8 @@ import viewRouter from './routes/viewPage.mjs';
 
 const app = express();
 const PORT = process.env.PORT || 8003;
+
+console.log(process.env.NODE_ENV);
 
 // middlewares
 app.use(cors());
