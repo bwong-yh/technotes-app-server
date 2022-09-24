@@ -4,9 +4,10 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import viewRouter from './routes/viewPage.mjs';
 import mongoose from 'mongoose';
 import connectDB from './config/dbConnection.mjs';
+import viewRouter from './routes/pageRoutes.mjs';
+import userRoutes from './routes/userRoutes.mjs';
 
 const app = express();
 const PORT = process.env.PORT || 8003;
@@ -24,6 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // routes
+app.use('/api/users', userRoutes);
 app.use(viewRouter);
 
 mongoose.connection.once('open', () => {
