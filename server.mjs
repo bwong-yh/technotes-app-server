@@ -6,8 +6,9 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import connectDB from './config/dbConnection.mjs';
-import viewRouter from './routes/pageRoutes.mjs';
-import userRoutes from './routes/userRoutes.mjs';
+import viewRouter from './routes/pageRouter.mjs';
+import userRouter from './routes/userRouter.mjs';
+import noteRouter from './routes/noteRouter.mjs';
 
 const app = express();
 const PORT = process.env.PORT || 8003;
@@ -25,7 +26,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // routes
-app.use('/api/users', userRoutes);
+app.use('/api/users', userRouter);
+app.use('/api/notes', noteRouter);
 app.use(viewRouter);
 
 mongoose.connection.once('open', () => {

@@ -25,6 +25,7 @@ const createNewUser = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: 'All fields are required.' });
   }
 
+  // check for existing user
   // // exec() to return a promise back when a arg is passed in
   const duplicate = await User.findOne({ username }).lean().exec();
 
@@ -37,13 +38,10 @@ const createNewUser = asyncHandler(async (req, res) => {
   // // 10 salt rounds
   const hashedPassword = await bcrypt.hash(password, 10);
   const userObject = { username, password: hashedPassword, roles };
-  const user = await User.create(userObject);
 
-  if (user) {
-    res.status(201).json({ message: `New user ${username} is created.` });
-  } else {
-    res.status(400).json({ message: 'Invalid user data received.' });
-  }
+  await User.create(userObject);
+
+  res.status(201).json({ message: `New user ${username} is created.` });
 });
 
 // update a user; PUT /api/users/:id
