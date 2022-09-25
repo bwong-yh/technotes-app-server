@@ -44,7 +44,7 @@ const createNewUser = asyncHandler(async (req, res) => {
   res.status(201).json({ message: `New user ${username} is created.` });
 });
 
-// update a user; PUT /api/users/:id
+// update a user; PATCH /api/users/
 const udpateUser = asyncHandler(async (req, res) => {
   const { id, username, password, roles, active } = req.body;
 
@@ -77,7 +77,7 @@ const udpateUser = asyncHandler(async (req, res) => {
   res.json({ message: `${updatedUser.username} updated.` });
 });
 
-// delete a user; delete /api/users/:id
+// delete a user; delete /api/users/
 const deleteUser = asyncHandler(async (req, res) => {
   const { id } = req.body;
 

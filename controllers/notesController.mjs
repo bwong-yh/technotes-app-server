@@ -42,4 +42,54 @@ const createNote = asyncHandler(async (req, res) => {
   res.status(201).json({ message: 'New note created.' });
 });
 
-export default { getAllNotes, createNote };
+// update a note; PATCH /api/notes
+const updateNote = asyncHandler(async (req, res) => {
+  const { id, user, title, text, completed } = req.body;
+
+  if (!id || !user || !title || !text || typeof completed !== 'boolean') {
+    return res.status(400).json({ message: 'All fields are required.' });
+  }
+
+  const note = await Note.findById(id).exec();
+
+  if (!note) {
+    return res.status(400).json({ message: 'No tickets found.' });
+  }
+
+  // check duplicated title
+  const duplicate = await Note.findOne({ title }).lean().exec();
+
+  if (duplicate) {
+    return res
+      .status(409)
+      .json({ message: `Note with the title "${title}" already existed.` });
+  }
+
+  // check existing user
+  const userId = await User.findById(user).lean().exec();
+
+  if (!userId) {
+    return res.status(409).json({ message: `User does not exist.` });
+  }
+
+  note.user = user;
+  note.title = title;
+  note.text = text;
+  note.completed = completed;
+
+  const updateTicket = await note.save();
+
+  res.status(200).json({ message: `Ticket#${updateTicket.ticket} updated.` });
+});
+
+// get all notes; GET /api/notes
+const deleteNote = asyncHandler(async (req, res) => {
+  const { id } = req.body;
+
+  const note = await Note.findById(id).exec();
+  const result = await note.deleteOne();
+
+  res.json({ message: `Ticket#${result.ticket} has been removed.` });
+});
+
+export default { getAllNotes, createNote, updateNote, deleteNote };
